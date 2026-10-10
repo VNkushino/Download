@@ -18,13 +18,12 @@ def get_download_link():
         'quiet': True,
         'no_warnings': True,
         'format': 'best',
-        # Thêm các cấu hình giả lập user-agent để chống chặn từ Facebook/TikTok
-        'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        # Giả lập trình duyệt Chrome để qua mặt tường lửa Facebook
+        'impersonate': 'chrome',
     }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            # Trích xuất thông tin video
             info = ydl.extract_info(url, download=False)
             video_url = info.get('url')
             
