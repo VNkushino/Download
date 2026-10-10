@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
             position: relative;
         }
 
-        /* Video nền động chiếm toàn màn hình */
+        /* Video nền hiển thị rõ nét, giảm độ mờ */
         .bg-video {
             position: fixed;
             top: 50%;
@@ -33,29 +33,29 @@
             object-fit: cover;
         }
 
-        /* Lớp phủ mờ tối giúp làm nổi bật khung app chữ trắng/xám ở trên */
+        /* Lớp phủ mờ nhẹ hơn để video nền sáng và nổi bật rõ hơn */
         .bg-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 15, 30, 0.55); /* Phủ tối tông màu xanh đen cyber */
-            backdrop-filter: blur(5px); /* Hiệu ứng kính mờ ảo diệu */
+            background: rgba(10, 15, 30, 0.25); /* Giảm độ tối để thấy rõ video */
+            backdrop-filter: blur(1.5px); /* Giảm độ mờ để video sắc nét */
             z-index: -1;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.78); /* Khung kính trong suốt hơn để nhìn thấy nền phía sau */
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             padding: 40px 30px;
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             width: 100%;
             max-width: 480px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             z-index: 10;
         }
 
@@ -162,17 +162,17 @@
 </head>
 <body>
 
-    <!-- Video nền anime chạy lặp tự động, tắt tiếng -->
+    <!-- Video nền anime -->
     <video autoplay muted loop playsinline class="bg-video">
         <source src="bg-anime.mp4" type="video/mp4">
-        Trình duyệt của bạn không hỗ trợ video nền.
+        Your browser does not support the video tag.
     </video>
     <div class="bg-overlay"></div>
 
 <div class="container">
     <div class="logo-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
     <h2>Media Downloader</h2>
-    <p class="subtitle">Tải video không dính logo mượt mà</p>
+    <p class="subtitle">Download watermark-free videos instantly</p>
 
     <div class="platforms">
         <span class="platform-badge" style="background: #e7f3ff; color: #1877f2;"><i class="fa-brands fa-facebook"></i> Facebook</span>
@@ -182,11 +182,11 @@
     </div>
 
     <div class="input-group">
-        <input type="text" id="videoUrl" placeholder="Dán link video vào đây...">
-        <button class="paste-btn" onclick="pasteLink()" title="Dán nhanh"><i class="fa-solid fa-paste"></i></button>
+        <input type="text" id="videoUrl" placeholder="Paste video link here...">
+        <button class="paste-btn" onclick="pasteLink()" title="Paste"><i class="fa-solid fa-paste"></i></button>
     </div>
 
-    <button class="submit-btn" onclick="getLink()">Tải Video Ngay</button>
+    <button class="submit-btn" onclick="getLink()">Download Now</button>
     <div id="result"></div>
 </div>
 
@@ -196,7 +196,7 @@
             const text = await navigator.clipboard.readText();
             document.getElementById('videoUrl').value = text;
         } catch (err) {
-            alert('Hãy dùng Ctrl+V để dán link nhé!');
+            alert('Please use Ctrl+V to paste the link!');
         }
     }
 
@@ -205,11 +205,11 @@
         const resultDiv = document.getElementById('result');
 
         if (!url) {
-            resultDiv.innerHTML = '<p class="error"><i class="fa-solid fa-circle-exclamation"></i> Vui lòng dán đường dẫn video!</p>';
+            resultDiv.innerHTML = '<p class="error"><i class="fa-solid fa-circle-exclamation"></i> Please paste a video link!</p>';
             return;
         }
 
-        resultDiv.innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Đang bóc tách dữ liệu video, vui lòng chờ...</div>';
+        resultDiv.innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Extracting video data, please wait...</div>';
 
         try {
             const response = await fetch('https://download-fb.onrender.com/get-download-link', {
@@ -225,7 +225,7 @@
                     <div class="success-box">
                         <p class="video-title"><i class="fa-solid fa-film"></i> ${data.title}</p>
                         <a class="download-btn" href="${data.download_url}" target="_blank" download>
-                            <i class="fa-solid fa-download"></i> Tải Xuống Ngay
+                            <i class="fa-solid fa-download"></i> Download Video
                         </a>
                     </div>
                 `;
@@ -233,7 +233,7 @@
                 resultDiv.innerHTML = `<p class="error"><i class="fa-solid fa-triangle-exclamation"></i> ${data.message}</p>`;
             }
         } catch (error) {
-            resultDiv.innerHTML = '<p class="error"><i class="fa-solid fa-server"></i> Không thể kết nối đến Server trên Render!</p>';
+            resultDiv.innerHTML = '<p class="error"><i class="fa-solid fa-server"></i> Failed to connect to the Render server!</p>';
         }
     }
 </script>
