@@ -4,7 +4,7 @@ import yt_dlp
 import os
 
 app = Flask(__name__)
-CORS(app)  # Cho phép mọi trang web gọi đến server này
+CORS(app)
 
 @app.route('/get-download-link', methods=['POST'])
 def get_download_link():
@@ -18,10 +18,13 @@ def get_download_link():
         'quiet': True,
         'no_warnings': True,
         'format': 'best',
+        # Thêm các cấu hình giả lập user-agent để chống chặn từ Facebook/TikTok
+        'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            # Trích xuất thông tin video
             info = ydl.extract_info(url, download=False)
             video_url = info.get('url')
             
