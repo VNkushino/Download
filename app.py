@@ -12,28 +12,25 @@ def get_download_link():
     url = data.get('url')
 
     if not url:
-        return jsonify({'success': False, 'message': 'Vui lòng nhập đường dẫn video!'}), 400
+        return jsonify({'success': False, 'message': 'Vui lòng nhập đường dẫn video'}), 400
 
-    # Cấu hình yt-dlp tối ưu để lấy link trực tiếp cho nhiều nền tảng
+    # Cấu hình yt-dlp tối ưu và đọc file cookies.txt nếu có trên server
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
         'format': 'best',
-        # Thêm một số thiết lập giả lập trình duyệt để tránh bị TikTok/Instagram chặn
-        'extractor_args': {
-            'tiktok': {'webpage_download': True}
-        }
     }
+    
+    # Kiểm tra xem bạn đã đưa file cookies.txt lên server chưa, nếu có thì tự động dùng
+    if os.path.exists('cookies.txt'):
+        ydl_opts['cookiefile'] = 'cookies.txt'
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            # yt-dlp tự động nhận diện link của YouTube, TikTok, Facebook, IG, X...
-            info = yt_dlp.YoutubeDL({'quiet': True}).extract_info(url, download=False)
-            
-            # Lấy link video trực tiếp
+            info = ydl.extract_info(url, download=False)
             video_url = info.get('url')
             
-            # Nếu là YouTube, đôi khi cần lấy qua định dạng kết hợp, ta xử lý phòng hờ:
+            # Phòng hờ cho YouTube hoặc một số nền tảng dùng định dạng stream tách rời
             if not video_url and 'formats' in info:
                 for f in info['formats']:
                     if f.get('url') and f.get('vcodec') != 'none' and f.get('acodec') != 'none':
@@ -43,17 +40,17 @@ def get_download_link():
             title = info.get('title', 'Video Download')
 
             if not video_url:
-                return jsonify({'success': False, 'message': 'Không thể bóc tách link trực tiếp từ nền tảng này!'}), 400
+                return jsonify({'success': False, 'message': 'Không thể bóc tách link trực tiếp từ video này!'}), 400
 
             return jsonify({
                 'success': True,
                 'title': title,
                 'download_url': video_url
             })
-            
     except Exception as e:
-        return jsonify({'success': False, 'message': f'Lỗi: Không thể tải video này. Chi tiết: {str(e)}'}), 500
+        return jsonify({'success': False, 'message': f'Lỗi khi lấy link: {str(e)}'}), 500
 
 if __name__ == '__main__':
+    # Render tự động cấp cổng thông qua biến môi trường PORT, nếu chạy dưới máy tính thì mặc định là 5000
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
