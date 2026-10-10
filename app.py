@@ -6,9 +6,16 @@ import os
 app = Flask(__name__)
 CORS(app)  # Cho phép mọi trang web gọi đến server này
 
+@app.route('/')
+def home():
+    return "Server download Facebook đang hoạt động bình thường!"
+
 @app.route('/get-download-link', methods=['POST'])
 def get_download_link():
     data = request.get_json()
+    if not data:
+        return jsonify({'success': False, 'message': 'Không tìm thấy dữ liệu JSON'}), 400
+        
     fb_url = data.get('url')
 
     if not fb_url:
@@ -36,6 +43,5 @@ def get_download_link():
         return jsonify({'success': False, 'message': f'Lỗi khi lấy link: {str(e)}'}), 500
 
 if __name__ == '__main__':
-    # Render tự động cấp cổng thông qua biến môi trường PORT, nếu chạy dưới máy tính thì mặc định là 5000
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
