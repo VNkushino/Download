@@ -19,7 +19,7 @@
             position: relative;
         }
 
-        /* Video nền hiển thị rõ nét, giảm độ mờ */
+        /* Video nền hiển thị rõ nét */
         .bg-video {
             position: fixed;
             top: 50%;
@@ -33,20 +33,21 @@
             object-fit: cover;
         }
 
-        /* Lớp phủ mờ nhẹ hơn để video nền sáng và nổi bật rõ hơn */
+        /* Lớp phủ mờ nhẹ */
         .bg-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 15, 30, 0.25); /* Giảm độ tối để thấy rõ video */
-            backdrop-filter: blur(1.5px); /* Giảm độ mờ để video sắc nét */
+            background: rgba(10, 15, 30, 0.25);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
             z-index: -1;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.78); /* Khung kính trong suốt hơn để nhìn thấy nền phía sau */
+            background: rgba(255, 255, 255, 0.78);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             padding: 40px 30px;
@@ -59,10 +60,29 @@
             z-index: 10;
         }
 
+        /* Hiệu ứng chữ Neon đổi màu chạy ngang */
+        .neon-banner {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #ff007f, #00f0ff, #7928ca, #ff007f);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: neonGlow 4s linear infinite;
+        }
+
+        @keyframes neonGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
+        }
+
         .logo-icon {
-            font-size: 42px;
+            font-size: 38px;
             color: #2563eb;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         h2 { color: #1f2937; margin-bottom: 6px; font-size: 24px; font-weight: 700; }
@@ -170,6 +190,9 @@
     <div class="bg-overlay"></div>
 
 <div class="container">
+    <!-- Dòng chữ Neon đổi màu thương hiệu cá nhân -->
+    <div class="neon-banner">✨ Make by kushino ✨</div>
+
     <div class="logo-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
     <h2>Media Downloader</h2>
     <p class="subtitle">Download watermark-free videos instantly</p>
