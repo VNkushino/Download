@@ -4,41 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All-in-One Video Downloader</title>
-    <!-- Font chữ Inter và FontAwesome đầy đủ icon -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         
-        /* Nền chuyển màu phong cách Anime Gradient */
         body {
-            background: linear-gradient(-45deg, #ff758c, #ff7eb3, #6a11cb, #2575fc);
-            background-size: 400% 400%;
-            animation: animeGradient 12s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             color: #333;
+            overflow: hidden;
+            position: relative;
         }
 
-        @keyframes animeGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Khung chứa video nền động */
+        .bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Lớp phủ tối mờ (Overlay) giúp làm nổi bật khung app lên trên video nền */
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45); /* Độ tối của lớp phủ, chỉnh từ 0.3 đến 0.7 tùy ý */
+            backdrop-filter: blur(4px); /* Hiệu ứng kính mờ nhẹ trên nền video */
+            z-index: -1;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             padding: 40px 30px;
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             width: 100%;
             max-width: 480px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            z-index: 10;
         }
 
         .logo-icon {
@@ -50,7 +68,6 @@
         h2 { color: #1f2937; margin-bottom: 6px; font-size: 24px; font-weight: 700; }
         p.subtitle { color: #4b5563; font-size: 14px; margin-bottom: 20px; font-weight: 500; }
         
-        /* Hiển thị rõ ràng các icon mạng xã hội kèm nhãn */
         .platforms {
             display: flex;
             justify-content: center;
@@ -145,12 +162,17 @@
 </head>
 <body>
 
+    <!-- Video nền anime động (Bạn có thể thay link video .mp4 khác vào đây nếu muốn) -->
+    <video autoplay muted loop class="bg-video">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-and-lights-31910-large.mp4" type="video/mp4">
+    </video>
+    <div class="bg-overlay"></div>
+
 <div class="container">
     <div class="logo-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
     <h2>Media Downloader</h2>
     <p class="subtitle">Tải video không dính logo mượt mà</p>
 
-    <!-- Các nền tảng hỗ trợ có nhãn rõ ràng -->
     <div class="platforms">
         <span class="platform-badge" style="background: #e7f3ff; color: #1877f2;"><i class="fa-brands fa-facebook"></i> Facebook</span>
         <span class="platform-badge" style="background: #fee2e2; color: #ef4444;"><i class="fa-brands fa-tiktok"></i> TikTok</span>
