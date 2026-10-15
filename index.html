@@ -49,18 +49,47 @@
             z-index: -1;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.78);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            padding: 40px 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        /* Hiệu ứng viền 7 sắc cầu vồng di chuyển theo chiều kim đồng hồ */
+        .glow-wrap {
+            position: relative;
             width: 100%;
             max-width: 480px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 26px;
+            padding: 3px; /* Độ dày của viền cầu vồng */
+            overflow: hidden;
             z-index: 10;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .glow-wrap::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000
+            );
+            animation: rotateRainbow 4s linear infinite;
+        }
+
+        @keyframes rotateRainbow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            padding: 37px 27px;
+            border-radius: 24px;
+            width: 100%;
+            text-align: center;
+            z-index: 11;
         }
 
         /* Hiệu ứng chữ Neon đổi màu chạy ngang */
@@ -192,28 +221,31 @@
     </video>
     <div class="bg-overlay"></div>
 
-<div class="container">
-    <!-- Dòng chữ Neon đổi màu thương hiệu cá nhân -->
-    <div class="neon-banner">✨ Make by kushino ✨</div>
+<!-- Khung viền 7 sắc cầu vồng xoay vòng -->
+<div class="glow-wrap">
+    <div class="container">
+        <!-- Dòng chữ Neon đổi màu thương hiệu cá nhân -->
+        <div class="neon-banner">✨ Make by kushino ✨</div>
 
-    <div class="logo-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
-    <h2>Media Downloader</h2>
-    <p class="subtitle">Download watermark-free videos instantly</p>
+        <div class="logo-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+        <h2>Media Downloader</h2>
+        <p class="subtitle">Download watermark-free videos instantly</p>
 
-    <div class="platforms">
-        <span class="platform-badge" style="background: #e7f3ff; color: #1877f2;"><i class="fa-brands fa-facebook"></i> Facebook</span>
-        <span class="platform-badge" style="background: #fee2e2; color: #ef4444;"><i class="fa-brands fa-tiktok"></i> TikTok</span>
-        <span class="platform-badge" style="background: #fce7f3; color: #db2777;"><i class="fa-brands fa-instagram"></i> Instagram</span>
-        <span class="platform-badge" style="background: #f1f5f9; color: #000000;"><i class="fa-brands fa-x-twitter"></i> X</span>
+        <div class="platforms">
+            <span class="platform-badge" style="background: #e7f3ff; color: #1877f2;"><i class="fa-brands fa-facebook"></i> Facebook</span>
+            <span class="platform-badge" style="background: #fee2e2; color: #ef4444;"><i class="fa-brands fa-tiktok"></i> TikTok</span>
+            <span class="platform-badge" style="background: #fce7f3; color: #db2777;"><i class="fa-brands fa-instagram"></i> Instagram</span>
+            <span class="platform-badge" style="background: #f1f5f9; color: #000000;"><i class="fa-brands fa-x-twitter"></i> X</span>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="videoUrl" placeholder="Paste video link here...">
+            <button class="paste-btn" onclick="pasteLink()" title="Paste"><i class="fa-solid fa-paste"></i></button>
+        </div>
+
+        <button class="submit-btn" onclick="getLink()">Download Now</button>
+        <div id="result"></div>
     </div>
-
-    <div class="input-group">
-        <input type="text" id="videoUrl" placeholder="Paste video link here...">
-        <button class="paste-btn" onclick="pasteLink()" title="Paste"><i class="fa-solid fa-paste"></i></button>
-    </div>
-
-    <button class="submit-btn" onclick="getLink()">Download Now</button>
-    <div id="result"></div>
 </div>
 
 <script>
