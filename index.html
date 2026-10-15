@@ -49,16 +49,16 @@
             z-index: -1;
         }
 
-        /* Hiệu ứng viền 7 sắc cầu vồng di chuyển theo chiều kim đồng hồ */
+        /* Khung viền cầu vồng siêu dày x3 x4 và phát sáng rực rỡ */
         .glow-wrap {
             position: relative;
             width: 100%;
             max-width: 480px;
-            border-radius: 26px;
-            padding: 3px; /* Độ dày của viền cầu vồng */
+            border-radius: 32px;
+            padding: 10px; /* Tăng độ dày viền lên x3 - x4 lần */
             overflow: hidden;
             z-index: 10;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3), 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
         .glow-wrap::before {
@@ -72,7 +72,7 @@
                 from 0deg,
                 #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000
             );
-            animation: rotateRainbow 4s linear infinite;
+            animation: rotateRainbow 3.5s linear infinite;
         }
 
         @keyframes rotateRainbow {
@@ -82,7 +82,7 @@
 
         .container {
             position: relative;
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             padding: 37px 27px;
@@ -221,7 +221,7 @@
     </video>
     <div class="bg-overlay"></div>
 
-<!-- Khung viền 7 sắc cầu vồng xoay vòng -->
+<!-- Khung viền 7 sắc cầu vồng dày xoay vòng -->
 <div class="glow-wrap">
     <div class="container">
         <!-- Dòng chữ Neon đổi màu thương hiệu cá nhân -->
